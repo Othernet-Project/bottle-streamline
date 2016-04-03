@@ -1,3 +1,7 @@
+"""
+This module contains mixins and classes for working with templates.
+"""
+
 import bottle
 
 from .base import RouteBase
@@ -5,11 +9,18 @@ from .base import RouteBase
 
 class TemplateMixin(object):
     """
-    Mixin that contains methods required to render templates.
+    Mixin that contains methods required to render templates. This class can be
+    used by adding template-related features to any class-based route handler.
     """
 
+    #: Name of the template to be rendered
     template_name = None
+
+    #: Function that renders the template (compatible with
+    #: :py:func:`~bottle.template`)
     template_func = staticmethod(bottle.template)
+
+    #: Default (base) template context
     default_context = {'request': bottle.request}
 
     def get_template_name(self, template_name=None):
@@ -72,6 +83,9 @@ class TemplateMixin(object):
 class TemplateRoute(RouteBase, TemplateMixin):
     """
     Class that renders the response into a template.
+
+    :subclasses: :py:class:`~streamline.base.RouteBase`
+    :includes: :py:class:`~streamline.template.TemplateMixin`
     """
 
     def create_response(self):
@@ -83,8 +97,12 @@ class XHRPartialRoute(TemplateRoute, TemplateMixin):
     """
     Class that renders different templates depending on whether request is XHR
     or not.
+
+    :subclasses: :py:class:`~streamline.template.TemplateRoute`
+    :includes: :py:class:`~streamline.template.TemplateMixin`
     """
 
+    #: Name of a partial template that is rendered for XHR requests
     partial_template_name = None
 
     def get_template_name(self):

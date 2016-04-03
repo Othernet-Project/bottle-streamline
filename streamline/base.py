@@ -1,3 +1,8 @@
+"""
+This module contains the base class which is used by all other class-based
+route handler classes.
+"""
+
 import bottle
 
 from . import utils
