@@ -8,3 +8,4 @@ This section contains API documentation for the bottle-streamline classes.
 
     base
     template
+    utils
