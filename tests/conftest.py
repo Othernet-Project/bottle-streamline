@@ -40,6 +40,9 @@ class TestClient:
     def patch(self, url, data={}):
         return self.request('PATCH', url, body=urlencode(data))
 
+    def put(self, url, data={}):
+        return self.request('PUT', url, body=urlencode(data))
+
 
 class TestServer:
     def __init__(self):
