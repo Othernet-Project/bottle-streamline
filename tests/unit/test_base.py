@@ -112,6 +112,29 @@ def test_route_custom_plugins(bottle):
         callback=FooBar)
 
 
+@mock.patch(MOD + '.bottle')
+def test_route_methods(bottle):
+    app = bottle.default_app.return_value
+
+    class FooBar(mod.RouteBase):
+        def get(self):
+            pass
+
+        def post(self):
+            pass
+
+        def delete(self):
+            pass
+    FooBar.route('/')
+    app.route.assert_called_once_with(
+        '/',
+        name='test_base:foo_bar',
+        method=['GET', 'POST', 'DELETE'],
+        apply=None,
+        skip=None,
+        callback=FooBar)
+
+
 def test_init_stashes_kwargs():
     class FooBar(mod.RouteBase):
         pass

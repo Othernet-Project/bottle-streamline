@@ -5,10 +5,10 @@ from . import utils
 
 METHODS = (
     'get',
-    'post'
+    'post',
     'put',
     'patch',
-    'delete'
+    'delete',
 )
 
 
