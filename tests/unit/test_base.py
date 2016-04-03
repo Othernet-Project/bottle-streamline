@@ -135,13 +135,22 @@ def test_route_methods(bottle):
         callback=FooBar)
 
 
-def test_init_stashes_kwargs():
+@mock.patch.object(mod.RouteBase, 'request')
+def test_init_stashes_kwargs(request):
     class FooBar(mod.RouteBase):
         pass
     f = FooBar(1, 2, 3, foo='bar')
     assert f.args == (1, 2, 3)
     assert f.kwargs == dict(foo='bar')
     assert f.body == []
+
+
+@mock.patch.object(mod.RouteBase, 'request')
+def test_init_adds_app_attrib(request):
+    class FooBar(mod.RouteBase):
+        pass
+    f = FooBar()
+    assert f.app == request.app
 
 
 @mock.patch.object(mod.RouteBase, 'request')
