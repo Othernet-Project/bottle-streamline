@@ -72,6 +72,7 @@ class RouteBase(object):
         self.kwargs = kwargs
         self.body = []
         self.app = self.request.app
+        self.config = self.request.app.config
 
     @classmethod
     def route(cls, path, name=None, app=None, **kwargs):

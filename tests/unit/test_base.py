@@ -154,6 +154,14 @@ def test_init_adds_app_attrib(request):
 
 
 @mock.patch.object(mod.RouteBase, 'request')
+def test_init_adds_config_attrib(request):
+    class FooBar(mod.RouteBase):
+        pass
+    f = FooBar()
+    assert f.config == request.app.config
+
+
+@mock.patch.object(mod.RouteBase, 'request')
 @mock.patch.object(mod.RouteBase, 'abort')
 def test_create_response_calls_available_methods(abort, request):
     class FooBar(mod.RouteBase):
