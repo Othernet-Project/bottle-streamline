@@ -1,5 +1,5 @@
 =================
-Bottle Streamline
+bottle-streamline
 =================
 
 .. image:: https://readthedocs.org/projects/bottle-streamline/badge/?version=latest
