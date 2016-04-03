@@ -18,30 +18,33 @@ SAMPLES = os.path.join(TESTDIR, 'sample_apps')
 
 
 class TestClient:
+    XHR = {'X-Requested-With': 'XMLHttpRequest'}
+
     def __init__(self, host='127.0.0.1', port=8080):
         self.conn = httplib.HTTPConnection(host, port, timeout=200)
 
-    def request(self, method, url, body=None):
+    def request(self, method, url, body=None, headers={}):
         self.conn.connect()
-        self.conn.request(method, url, body)
+        self.conn.request(method, url, body, headers)
         resp = self.conn.getresponse()
         self.conn.close()
         return resp
 
-    def get(self, url):
-        return self.request('GET', url)
+    def get(self, url, headers={}):
+        return self.request('GET', url, headers=headers)
 
-    def post(self, url, data={}):
-        return self.request('POST', url, body=urlencode(data))
+    def post(self, url, data={}, headers={}):
+        return self.request('POST', url, body=urlencode(data), headers=headers)
 
-    def delete(self, url):
-        return self.request('DELETE', url)
+    def delete(self, url, headers={}):
+        return self.request('DELETE', url, headers=headers)
 
-    def patch(self, url, data={}):
-        return self.request('PATCH', url, body=urlencode(data))
+    def patch(self, url, data={}, headers={}):
+        return self.request('PATCH', url, body=urlencode(data),
+                            headers=headers)
 
-    def put(self, url, data={}):
-        return self.request('PUT', url, body=urlencode(data))
+    def put(self, url, data={}, headers={}):
+        return self.request('PUT', url, body=urlencode(data), headers=headers)
 
 
 class TestServer:
