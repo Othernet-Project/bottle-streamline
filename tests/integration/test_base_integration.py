@@ -4,8 +4,7 @@ def test_simple_app(http_client, sample_app):
     res = c.get('/')
     assert res.status == 200
     assert 'Hello world!' in res.read()
-    headers = res.getheaders()
-    assert ('foo', 'bar') in headers
+    assert res.getheader('foo') == 'bar'
 
 
 def test_simple_app_post_fails(http_client, sample_app):
