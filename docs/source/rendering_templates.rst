@@ -102,8 +102,7 @@ Customizing the rendering function invocation
 ---------------------------------------------
 
 The rendering function is invoked by passing the template name as first
-positional argument, and template context as second. The result is then stored
-in ``self.body`` so that it can be returned as response body. This is done in
-the ``render_template()`` method. You can customize the behavior by overloading
-this method. Keep in mind, though, that you *must* assign the result to
-``self.body``.
+positional argument, and template context as second. The function returns the
+rendered template as a string or an iterable of strings. This is done in the
+``render_template()`` method. You can customize the behavior by overloading
+this method.
