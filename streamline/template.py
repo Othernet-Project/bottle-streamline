@@ -12,14 +12,18 @@ class TemplateMixin(object):
     template_func = staticmethod(bottle.template)
     default_context = {'request': bottle.request}
 
-    def get_template_name(self):
+    def get_template_name(self, template_name=None):
         """
         Returns template name. Default behavior is to return the value of the
         :py:attr:`~TemplateMixin.template_name` property.
+
+        If ``template_name`` argument is specified, it will be used instead of
+        the property.
         """
-        if not self.template_name:
+        template_name = template_name or self.template_name
+        if not template_name:
             raise NotImplementedError('Missing template_name value')
-        return self.template_name
+        return template_name
 
     def get_default_context(self):
         """
@@ -73,3 +77,19 @@ class TemplateRoute(RouteBase, TemplateMixin):
     def create_response(self):
         super(TemplateRoute, self).create_response()
         self.body = self.render_template()
+
+
+class XHRPartialRoute(TemplateRoute, TemplateMixin):
+    """
+    Class that renders different templates depending on whether request is XHR
+    or not.
+    """
+
+    partial_template_name = None
+
+    def get_template_name(self):
+        template_name = (self.partial_template_name
+                         if self.request.is_xhr else None)
+        return super(XHRPartialRoute, self).get_template_name(template_name)
+
+ROCARoute = XHRPartialRoute

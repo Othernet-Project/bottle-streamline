@@ -15,12 +15,27 @@ def test_get_template():
     assert f.get_template_name() == 'foobar'
 
 
+def test_get_template_as_argument():
+    class Foo(mod.TemplateMixin):
+        template_name = 'foobar'
+    f = Foo()
+    assert f.get_template_name('barfoo') == 'barfoo'
+
+
 def test_get_template_with_no_template_name():
     class Foo(mod.TemplateMixin):
         pass
     f = Foo()
     with pytest.raises(NotImplementedError):
         f.get_template_name()
+
+
+def test_get_template_as_argument_none():
+    class Foo(mod.TemplateMixin):
+        pass
+    f = Foo()
+    with pytest.raises(NotImplementedError):
+        f.get_template_name(None)
 
 
 def test_get_default_ctx():
@@ -114,3 +129,25 @@ def test_template_route_renders(render_template, request):
     f = Foo()
     f.create_response()
     render_template.assert_called_once_with()
+
+
+@mock.patch.object(mod.XHRPartialRoute, 'request')
+def test_roca_normally_selects_default_template(request):
+    class Foo(mod.XHRPartialRoute):
+        template_name = 'foo'
+        partial_template_name = 'bar'
+    request.is_xhr = False
+    f = Foo()
+    ret = f.get_template_name()
+    assert ret == 'foo'
+
+
+@mock.patch.object(mod.XHRPartialRoute, 'request')
+def test_roca_returns_partial_on_xhr(request):
+    class Foo(mod.XHRPartialRoute):
+        template_name = 'foo'
+        partial_template_name = 'bar'
+    request.is_xhr = True
+    f = Foo()
+    ret = f.get_template_name()
+    assert ret == 'bar'
