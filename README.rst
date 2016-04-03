@@ -10,8 +10,16 @@ Bottle Streamline
     :target: http://bottle-streamline.readthedocs.org/en/develop/?badge=develop
     :alt: Development documentation Status
 
-Bottle Streamline is a module that contains classes for writing class-based
-route handlers for `Bottle <http://bottlepy.org>`_ applications.
+
+This project is a collection of classes for writing complex, modullar, and/or
+reusable route handlers using `bottle <http://bottlepy.org>`_ web framework.
+
+Even though 'complex route handlers' may seem like an oximoron, there may be
+situations where support for multiple parameters are needed or where a simple
+branching in the route handler code may completely change the logic of your 
+route handler. If you find yourself running into this type of situation and
+struggle to organize the code, you may find bottle-streamline is a good fit for
+your project.
 
 Quick example
 =============
