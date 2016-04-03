@@ -12,5 +12,7 @@ def test_template_xhr(http_client, sample_app):
     c = http_client()
     res = c.get('/roca')
     assert res.read() == 'This is a full template\n'
+    assert res.getheader('Cache-Control') is None
     res = c.get('/roca', headers=c.XHR)
     assert res.read() == 'This is a partial template\n'
+    assert res.getheader('Cache-Control') == 'no-store'

@@ -92,4 +92,9 @@ class XHRPartialRoute(TemplateRoute, TemplateMixin):
                          if self.request.is_xhr else None)
         return super(XHRPartialRoute, self).get_template_name(template_name)
 
+    def create_response(self):
+        if self.request.is_xhr:
+            self.response.headers['Cache-Control'] = 'no-store'
+        super(XHRPartialRoute, self).create_response()
+
 ROCARoute = XHRPartialRoute
