@@ -93,13 +93,12 @@ class TemplateRoute(RouteBase, TemplateMixin):
         self.body = self.render_template()
 
 
-class XHRPartialRoute(TemplateRoute, TemplateMixin):
+class XHRPartialRoute(TemplateRoute):
     """
     Class that renders different templates depending on whether request is XHR
     or not.
 
     :subclasses: :py:class:`~streamline.template.TemplateRoute`
-    :includes: :py:class:`~streamline.template.TemplateMixin`
     """
 
     #: Name of a partial template that is rendered for XHR requests
