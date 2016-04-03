@@ -34,6 +34,12 @@ class TestClient:
     def post(self, url, data={}):
         return self.request('POST', url, body=urlencode(data))
 
+    def delete(self, url):
+        return self.request('DELETE', url)
+
+    def patch(self, url, data={}):
+        return self.request('PATCH', url, body=urlencode(data))
+
 
 class TestServer:
     def __init__(self):
