@@ -151,3 +151,26 @@ def test_roca_returns_partial_on_xhr(request):
     f = Foo()
     ret = f.get_template_name()
     assert ret == 'bar'
+
+
+@mock.patch.object(mod.XHRPartialRoute, 'request')
+@mock.patch.object(mod.XHRPartialRoute, 'response')
+def test_roca_sets_cache_control_header_for_xhr(response, request):
+    mock_func = mock.Mock()
+
+    class Foo(mod.XHRPartialRoute):
+        def get(self):
+            pass
+        template_name = 'foo'
+        partial_template_name = 'bar'
+        template_func = mock_func
+    f = Foo()
+    request.method = 'GET'
+    request.is_xhr = True
+    response.headers = {}
+    f.create_response()
+    assert response.headers == {'Cache-Control': 'no-store'}
+    request.is_xhr = False
+    response.headers = {}
+    f.create_response()
+    assert response.headers == {}
