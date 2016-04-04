@@ -150,7 +150,7 @@ class FormRoute(FormMixin, FormBase, RouteBase):
         super(FormRoute, self).create_response()
 
 
-class TemplateFormRoute(FormMixin, FormBase, RouteBase):
+class TemplateFormRoute(FormMixin, FormBase, TemplateRoute):
     """
     Class for form handling with template rendering.
 
