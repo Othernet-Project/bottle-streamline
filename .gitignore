@@ -4,3 +4,4 @@
 /.cache
 /*.egg-info
 /docs/build
+/.ropeproject
