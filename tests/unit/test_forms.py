@@ -118,12 +118,16 @@ def test_form_valid_methods():
     assert Foo.valid_methods == ['GET', 'POST']
 
 
-# SimpleFormRoute
+# FormRoute
+
+
+def test_form_route_valid_methods():
+    assert mod.FormRoute.valid_methods == ['GET', 'POST']
 
 
 @mock.patch.object(mod.FormRoute, 'request')
 @mock.patch.object(mod.FormRoute, 'get_form')
-def test_simple_form_form_attrib(get_form, request):
+def test_form_form_attrib(get_form, request):
     form = mock.Mock()
     get_form.return_value = form
     request.method = 'GET'
@@ -136,13 +140,17 @@ def test_simple_form_form_attrib(get_form, request):
     assert f.form == form
 
 
-# FormRoute
+# TemplateFormRoute
+
+
+def test_template_form_route_valid_methods():
+    assert mod.TemplateFormRoute.valid_methods == ['GET', 'POST']
 
 
 @mock.patch.object(mod.TemplateFormRoute, 'request')
 @mock.patch.object(mod.TemplateFormRoute, 'get_form')
 @mock.patch.object(mod.TemplateFormRoute, 'render_template')
-def test_form_route_form_attrib(render_template, get_form, request):
+def test_template_form_route_form_attrib(render_template, get_form, request):
     form = mock.Mock()
     get_form.return_value = form
     request.method = 'GET'
@@ -156,6 +164,10 @@ def test_form_route_form_attrib(render_template, get_form, request):
 
 
 # XHRPartialFormRoute
+
+
+def test_roca_form_route_valid_methods():
+    assert mod.XHRPartialFormRoute.valid_methods == ['GET', 'POST']
 
 
 @mock.patch.object(mod.XHRPartialFormRoute, 'request')

@@ -30,7 +30,7 @@ def test_valid_methods_get():
     assert FooBar.valid_methods == ['GET']
 
 
-@mock.patch(MOD + '.bottle')
+@mock.patch.object(mod.RouteBase, 'bottle')
 def test_route_defaults(bottle):
     app = bottle.default_app.return_value
 
@@ -46,7 +46,7 @@ def test_route_defaults(bottle):
         callback=FooBar)
 
 
-@mock.patch(MOD + '.bottle')
+@mock.patch.object(mod.RouteBase, 'bottle')
 def test_route_custom_app(bottle):
     app = mock.Mock()
 
@@ -62,7 +62,7 @@ def test_route_custom_app(bottle):
         callback=FooBar)
 
 
-@mock.patch(MOD + '.bottle')
+@mock.patch.object(mod.RouteBase, 'bottle')
 def test_route_custom_name(bottle):
     app = bottle.default_app.return_value
 
@@ -78,7 +78,7 @@ def test_route_custom_name(bottle):
         callback=FooBar)
 
 
-@mock.patch(MOD + '.bottle')
+@mock.patch.object(mod.RouteBase, 'bottle')
 def test_route_extra_params(bottle):
     app = bottle.default_app.return_value
 
@@ -95,7 +95,7 @@ def test_route_extra_params(bottle):
         foo='bar')
 
 
-@mock.patch(MOD + '.bottle')
+@mock.patch.object(mod.RouteBase, 'bottle')
 def test_route_custom_plugins(bottle):
     app = bottle.default_app.return_value
 
@@ -112,7 +112,7 @@ def test_route_custom_plugins(bottle):
         callback=FooBar)
 
 
-@mock.patch(MOD + '.bottle')
+@mock.patch.object(mod.RouteBase, 'bottle')
 def test_route_methods(bottle):
     app = bottle.default_app.return_value
 
@@ -129,7 +129,7 @@ def test_route_methods(bottle):
     app.route.assert_called_once_with(
         '/',
         name='test_base:foo_bar',
-        method=['DELETE', 'GET', 'POST'],
+        method=['GET', 'POST', 'DELETE'],
         apply=None,
         skip=None,
         callback=FooBar)

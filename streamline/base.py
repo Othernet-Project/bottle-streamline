@@ -28,14 +28,36 @@ class RouteMeta(type):
     class' ``valid_methods`` property. This property may later be used to
     determine whether a request method is valid for the given class.
     """
-    def __new__(cls, name, bases, dict):
-        lookup = itertools.chain([dict], [b.__dict__ for b in bases])
-        meths = []
-        for d in lookup:
-            meths.extend([m.upper() for m in METHODS if m in d])
-        meths = list(sorted(set(meths)))  # sort to make order deterministic
-        dict['valid_methods'] = meths
-        return type.__new__(cls, name, bases, dict)
+    def __new__(mcl, name, bases, dict):
+        # NOTE TO BRAVE EXPLORER:
+        #
+        # Normally, when you want to delve deep into the world of metaclasses,
+        # you are guided by the light that is the official Python
+        # documentation. It usually does the trick, too. In this case, though,
+        # the documentation leads us into the dark corners of the unexplored
+        # Python caves, where we got lost, and finally returned with a new
+        # solution, albeit with a hole in our foot.
+        #
+        # A few things we learned:
+        #
+        # - Don't use metaclasses if you can manage without them.
+        # - Do not think that ``obj.__dict__`` would return *all* properties
+        #   found on the object (use ``dir()`` instead).
+        # - Do not mess with ``dict`` or any such nonsense if you have multiple
+        #   levels of inheritance and base classes.
+        #
+        # Finally, we managed to map out a path towards the light:
+        #
+        # 1. Instantiate the class object first.
+        # 2. Since inheritance and mixins were sorted out after (1), get all
+        #    the properties using ``dir()``.
+        # 3. Now we have the most authoritative list of props know to man, and
+        #    we can do what we wanted, which is to enumerate the methods.
+        #
+        cls = type.__new__(mcl, name, bases, dict)
+        meths = [m.upper() for m in METHODS if m in dir(cls)]
+        cls.valid_methods = meths
+        return cls
 
 
 class RouteBase(object):
@@ -105,7 +127,7 @@ class RouteBase(object):
         bottle API.
         """
         if not app:
-            app = bottle.default_app()
+            app = cls.bottle.default_app()
         kwargs['name'] = name or cls.get_generic_name()
         kwargs['method'] = cls.valid_methods
         kwargs['apply'] = cls.include_plugins
