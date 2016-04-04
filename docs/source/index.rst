@@ -38,4 +38,5 @@ Documentation
    intro
    basics
    rendering_templates
+   working_with_forms
    apidoc
