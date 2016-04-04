@@ -15,8 +15,8 @@ class Simple(FormRoute):
         return 'Imagine this is a form'
 
     def form_valid(self):
-        return 'OK: {} {}'.format(self.form.data['string'],
-                                  self.form.data['number'])
+        return 'OK: {} {}'.format(self.form.data.get('string', ''),
+                                  self.form.data.get('number', ''))
 
     def form_invalid(self):
         self.response.status = 400
