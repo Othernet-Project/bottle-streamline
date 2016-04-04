@@ -80,6 +80,8 @@ class RouteBase(object):
         self.body = []
         self.app = self.request.app
         self.config = self.request.app.config
+        self.method = self.request.method.lower()
+        self.is_xhr = self.request.is_xhr
 
     @classmethod
     def route(cls, path, name=None, app=None, **kwargs):
