@@ -27,10 +27,17 @@ Let's take a look at example code::
 If you remember what we've discussed about the return value of route handlers,
 you will notice that a ``dict`` is not one of the allowed return values. This
 is because a ``dict`` is not returned directly by
-:py:class:`~streamline.template.TemplateRoute` handlers. The return value of
-the business logic methods is used as a template context, and a template
-specified by the :py:attr:`~streamline.template.TemplateRoute.template_name` is
-rendered and returned as response (a string).
+:py:class:`~streamline.template.TemplateRoute` handlers. 
+
+The return value of the business logic methods is used as a template context,
+and a template specified by the
+:py:attr:`~streamline.template.TemplateRoute.template_name` is rendered and
+returned as response (a string).
+
+If you return any object other than a ``dict``, it wil also be made available
+to the template context as ``body`` variable. The only exception is a
+:py:class:`~bottle.HTTPResponse` object which completely bypasses template
+rendering.
 
 XHR partial rendering
 ---------------------
