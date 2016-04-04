@@ -12,3 +12,11 @@ def test_submit_form(http_client, sample_app):
     res = c.post('/simple', data={'string': 'Foo', 'number': 12})
     assert res.status == 200
     assert res.read() == 'OK: Foo 12'
+
+
+def test_failed_submission(http_client, sample_app):
+    sample_app('form_app.py')
+    c = http_client()
+    res = c.post('/simple', data={'number': 12})
+    assert res.status == 400
+    assert res.read() == 'WRONG'
