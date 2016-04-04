@@ -48,7 +48,8 @@ type. It only allows two kinds of objects at this stage:
 - :py:class:`~bottle.HTTPResponse`
 - string (either ``unicode`` or ``bytes``)
 
-This is important to keep in mind.
+If the first object is an :py:class:`~bottle.HTTPResponse` object,
+:py:meth:`~bottle.Bottle._cast()` is called on it.
 
 How CBRH fit into bottle route handling
 ---------------------------------------
@@ -66,10 +67,17 @@ itself as an iterator. The CBRH object is, therefore, the http response itself.
 The main implication of CBRH being an iterator container is that the response
 body (discussed in later chapters) can only be a string or
 :py:class:`~bottle.HTTPResponse` object. In your handler code, you cannot
-expect to return any other kind of object. If you still wish to do that, your
-option is to *raise* a new :py:class:`~bottle.HTTPResponse` object (these
-objects double as exception classes so they can be raised), and set the body to
-your desired object. We only recommend doing this in a pinch.
+expect to return any other kind of object. If you need to return objects other
+than strings you need to either raise or return
+:py:class:`~bottle.HTTPResponse` objects (these objects double as exception
+classes so they can be raised). Here is an example::
+
+
+    class MyRoute(RouteBase):
+        def get(self):
+            data = open('somefile.ext', 'r')
+            return self.HTTPResponse(data)
+
 
 The following chapters will go into the details of how to use CBRH classes in
 different scenarios.

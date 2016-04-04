@@ -128,6 +128,8 @@ methods that are added to its namespace for your convenience. These are:
   function
 - :py:meth:`~streamline.base.RouteBase.redirect`: :py:func:`bottle.redirect` 
   function
+- :py:attr:`~streamline.base.RouteBase.HTTPResponse`: 
+  :py:class:`bottle.HTTPResponse` class
 
 After initialization, two more properties will be available in the instances:
 
