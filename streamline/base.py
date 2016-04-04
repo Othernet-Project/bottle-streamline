@@ -3,6 +3,8 @@ This module contains the base class which is used by all other class-based
 route handler classes.
 """
 
+import itertools
+
 import bottle
 
 from . import utils
@@ -27,7 +29,11 @@ class RouteMeta(type):
     determine whether a request method is valid for the given class.
     """
     def __new__(cls, name, bases, dict):
-        meths = [m.upper() for m in METHODS if m in dict]
+        lookup = itertools.chain([dict], [b.__dict__ for b in bases])
+        meths = []
+        for d in lookup:
+            meths.extend([m.upper() for m in METHODS if m in d])
+        meths = list(sorted(set(meths)))  # sort to make order deterministic
         dict['valid_methods'] = meths
         return type.__new__(cls, name, bases, dict)
 

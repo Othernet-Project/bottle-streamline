@@ -113,7 +113,7 @@ def test_validate_invalid():
 
 
 def test_form_valid_methods():
-    class Foo(mod.RouteBase, mod.FormBase):
+    class Foo(mod.FormBase, mod.RouteBase):
         pass
     assert Foo.valid_methods == ['GET', 'POST']
 

@@ -129,7 +129,7 @@ def test_route_methods(bottle):
     app.route.assert_called_once_with(
         '/',
         name='test_base:foo_bar',
-        method=['GET', 'POST', 'DELETE'],
+        method=['DELETE', 'GET', 'POST'],
         apply=None,
         skip=None,
         callback=FooBar)
