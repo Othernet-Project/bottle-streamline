@@ -17,7 +17,7 @@ def test_get_generic_name():
 def test_no_valid_methods():
     class FooBar(mod.RouteBase):
         pass
-    assert FooBar.valid_methods == []
+    assert FooBar.get_valid_methods() == []
 
 
 def test_valid_methods_get():
@@ -27,7 +27,7 @@ def test_valid_methods_get():
 
         def bar(self):
             pass
-    assert FooBar.valid_methods == ['GET']
+    assert FooBar.get_valid_methods() == ['GET']
 
 
 @mock.patch.object(mod.RouteBase, 'bottle')

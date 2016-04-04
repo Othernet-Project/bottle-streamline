@@ -115,14 +115,14 @@ def test_validate_invalid():
 def test_form_valid_methods():
     class Foo(mod.FormBase, mod.RouteBase):
         pass
-    assert Foo.valid_methods == ['GET', 'POST']
+    assert Foo.get_valid_methods() == ['GET', 'POST']
 
 
 # FormRoute
 
 
 def test_form_route_valid_methods():
-    assert mod.FormRoute.valid_methods == ['GET', 'POST']
+    assert mod.FormRoute.get_valid_methods() == ['GET', 'POST']
 
 
 @mock.patch.object(mod.FormRoute, 'request')
@@ -144,7 +144,7 @@ def test_form_form_attrib(get_form, request):
 
 
 def test_template_form_route_valid_methods():
-    assert mod.TemplateFormRoute.valid_methods == ['GET', 'POST']
+    assert mod.TemplateFormRoute.get_valid_methods() == ['GET', 'POST']
 
 
 @mock.patch.object(mod.TemplateFormRoute, 'request')
@@ -167,7 +167,7 @@ def test_template_form_route_form_attrib(render_template, get_form, request):
 
 
 def test_roca_form_route_valid_methods():
-    assert mod.XHRPartialFormRoute.valid_methods == ['GET', 'POST']
+    assert mod.XHRPartialFormRoute.get_valid_methods() == ['GET', 'POST']
 
 
 @mock.patch.object(mod.XHRPartialFormRoute, 'request')
