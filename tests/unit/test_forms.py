@@ -112,28 +112,18 @@ def test_validate_invalid():
     assert f.form_invalid.call_count == 1
 
 
-# SimpleFormRoute
-
-
-@mock.patch.object(mod.SimpleFormRoute, 'request')
-@mock.patch.object(mod.SimpleFormRoute, 'get_form')
-def test_simple_form_form_attrib(get_form, request):
-    form = mock.Mock()
-    get_form.return_value = form
-    request.method = 'GET'
-
-    class Foo(mod.SimpleFormRoute):
+def test_form_valid_methods():
+    class Foo(mod.RouteBase, mod.FormBase):
         pass
-    f = Foo()
-    assert not hasattr(f, 'form')
-    f.create_response()
-    assert f.form == form
+    assert Foo.valid_methods == ['GET', 'POST']
+
+
+# SimpleFormRoute
 
 
 @mock.patch.object(mod.FormRoute, 'request')
 @mock.patch.object(mod.FormRoute, 'get_form')
-@mock.patch.object(mod.FormRoute, 'render_template')
-def test_form_route_form_attrib(render_template, get_form, request):
+def test_simple_form_form_attrib(get_form, request):
     form = mock.Mock()
     get_form.return_value = form
     request.method = 'GET'
@@ -144,6 +134,28 @@ def test_form_route_form_attrib(render_template, get_form, request):
     assert not hasattr(f, 'form')
     f.create_response()
     assert f.form == form
+
+
+# FormRoute
+
+
+@mock.patch.object(mod.TemplateFormRoute, 'request')
+@mock.patch.object(mod.TemplateFormRoute, 'get_form')
+@mock.patch.object(mod.TemplateFormRoute, 'render_template')
+def test_form_route_form_attrib(render_template, get_form, request):
+    form = mock.Mock()
+    get_form.return_value = form
+    request.method = 'GET'
+
+    class Foo(mod.TemplateFormRoute):
+        pass
+    f = Foo()
+    assert not hasattr(f, 'form')
+    f.create_response()
+    assert f.form == form
+
+
+# XHRPartialFormRoute
 
 
 @mock.patch.object(mod.XHRPartialFormRoute, 'request')

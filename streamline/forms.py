@@ -136,7 +136,7 @@ class FormBase(object):
         return self.validate(*args, **kwargs)
 
 
-class SimpleFormRoute(RouteBase, FormMixin, FormBase):
+class FormRoute(FormMixin, FormBase, RouteBase):
     """
     Class for form handling without templates.
 
@@ -147,10 +147,10 @@ class SimpleFormRoute(RouteBase, FormMixin, FormBase):
 
     def create_response(self):
         self.form = self.get_form()
-        super(SimpleFormRoute, self).create_response()
+        super(FormRoute, self).create_response()
 
 
-class FormRoute(TemplateRoute, FormMixin, FormBase):
+class TemplateFormRoute(FormMixin, FormBase, RouteBase):
     """
     Class for form handling with template rendering.
 
@@ -160,16 +160,16 @@ class FormRoute(TemplateRoute, FormMixin, FormBase):
     """
 
     def get_context(self):
-        ctx = super(FormRoute, self).get_context()
+        ctx = super(TemplateFormRoute, self).get_context()
         ctx['form'] = self.get_form()
         return ctx
 
     def create_response(self):
         self.form = self.get_form()
-        super(FormRoute, self).create_response()
+        super(TemplateFormRoute, self).create_response()
 
 
-class XHRPartialFormRoute(XHRPartialRoute, FormMixin, FormBase):
+class XHRPartialFormRoute(FormMixin, FormBase, XHRPartialRoute):
     """
     Class for form handling with XHR partial rendering support.
 

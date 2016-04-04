@@ -80,7 +80,7 @@ class TemplateMixin(object):
         return fn(template, ctx)
 
 
-class TemplateRoute(RouteBase, TemplateMixin):
+class TemplateRoute(TemplateMixin, RouteBase):
     """
     Class that renders the response into a template.
 
