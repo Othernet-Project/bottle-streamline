@@ -1,5 +1,6 @@
 from .base import RouteBase
 from .template import TemplateRoute, XHRPartialRoute, ROCARoute
+from .forms import SimpleFormRoute, FormRoute, XHRPartialFormRoute
 
 
 __version__ = '1.0.dev1'
@@ -9,4 +10,7 @@ __all__ = (
     TemplateRoute,
     XHRPartialRoute,
     ROCARoute,
+    SimpleFormRoute,
+    FormRoute,
+    XHRPartialFormRoute,
 )
