@@ -116,9 +116,12 @@ class RouteBase(object):
         return '{}:{}'.format(cls.__module__,
                               utils.decamelize(cls.__name__))
 
+    def get_method(self):
+        return self.request.method.lower()
+
     def create_response(self):
         try:
-            meth = getattr(self, self.request.method.lower())
+            meth = getattr(self, self.get_method())
         except AttributeError:
             self.abort(405)
         self.body = meth(*self.args, **self.kwargs)
