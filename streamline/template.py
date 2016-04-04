@@ -90,6 +90,8 @@ class TemplateRoute(RouteBase, TemplateMixin):
 
     def create_response(self):
         super(TemplateRoute, self).create_response()
+        if isinstance(self.body, self.HTTPResponse):
+            return
         self.body = self.render_template()
 
 

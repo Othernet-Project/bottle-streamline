@@ -131,6 +131,18 @@ def test_template_route_renders(render_template, request):
     render_template.assert_called_once_with()
 
 
+@mock.patch.object(mod.TemplateRoute, 'request')
+@mock.patch.object(mod.TemplateRoute, 'render_template')
+def test_template_not_rendered_if_httpresponse(render_template, request):
+    class Foo(mod.TemplateRoute):
+        def get(self):
+            return self.HTTPResponse()
+    request.method = 'GET'
+    f = Foo()
+    f.create_response()
+    assert render_template.call_count == 0
+
+
 @mock.patch.object(mod.XHRPartialRoute, 'request')
 def test_roca_normally_selects_default_template(request):
     class Foo(mod.XHRPartialRoute):
