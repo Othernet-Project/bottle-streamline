@@ -51,16 +51,18 @@ class RouteBase(object):
     #: List of plugins that should be skipped
     exclude_plugins = None
 
-    #: Alias for ``bottle`` module
+    #: alias of :py:mod:`bottle` module
     bottle = bottle
-    #: Alias for ``bottle.request`` object
+    #: alias of :py:data:`bottle.request` object
     request = bottle.request
-    #: Alias for ``bottle.response`` object
+    #: alias of :py:data:`bottle.response` object
     response = bottle.response
-    #: Alias for ``bottle.abort``
+    #: alias of :py:func:`bottle.abort`
     abort = staticmethod(bottle.abort)
-    #: Alias for ``bottle.redirect``
+    #: alias of :py:func:`bottle.redirect`
     redirect = staticmethod(bottle.redirect)
+    #: alias of :py:class:`bottle.HTTPResponse`
+    HTTPResponse = bottle.HTTPResponse
 
     def __init__(self, *args, **kwargs):
         """
