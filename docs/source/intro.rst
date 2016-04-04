@@ -56,10 +56,11 @@ How CBRH fit into bottle route handling
 
 When a CBRH is invoked, it is basically instantiated (its ``__init__`` method 
 is invoked). Unlike handler functions, CBRHs don't do any actual work when they 
-are invoked/instantiated. Instead, they implements the container interface of
+are invoked/instantiated. Instead, they implement the container interface of
 the `iterator types
 <https://docs.python.org/2/library/stdtypes.html#typeiter>`_ and presents
-itself as an iterator. The CBRH object is, therefore, the http response itself.
+itself as an iterator. The entire CBRH object is, therefore, acts as a http
+response.
 
 .. note::
     CBRH classes are *not* subclasses of :py:class:`~bottle.HTTPResponse`.
@@ -70,14 +71,13 @@ body (discussed in later chapters) can only be a string or
 expect to return any other kind of object. If you need to return objects other
 than strings you need to either raise or return
 :py:class:`~bottle.HTTPResponse` objects (these objects double as exception
-classes so they can be raised). Here is an example::
-
+classes so they can be raised) and pass the object you want to return as body. 
+Here is an example::
 
     class MyRoute(RouteBase):
         def get(self):
             data = open('somefile.ext', 'r')
             return self.HTTPResponse(data)
-
 
 The following chapters will go into the details of how to use CBRH classes in
 different scenarios.
