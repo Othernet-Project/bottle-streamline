@@ -103,7 +103,7 @@ class RouteBase(object):
         example if we have a class that is named ``MyRoute`` in a module called
         ``beans``, the resulting generic name will be ``beans:my_route``.
         """
-        return '{}:{}'.format(cls.__module__,
+        return '{}:{}'.format(cls.__module__.split('.')[-1],
                               utils.decamelize(cls.__name__))
 
     def get_method(self):
