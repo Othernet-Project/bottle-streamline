@@ -200,3 +200,4 @@ def test_roca_form_route_get_context_super_called(get_form, request, super_fn):
     f = Foo()
     f.get_context()
     assert super_fn.called
+    super_fn.assert_called_with(mod.XHRPartialFormRoute, f)
