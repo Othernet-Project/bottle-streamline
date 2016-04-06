@@ -179,7 +179,7 @@ class XHRPartialFormRoute(FormMixin, FormBase, XHRPartialRoute):
     """
 
     def get_context(self):
-        ctx = super(FormRoute, self).get_context()
+        ctx = super(XHRPartialFormRoute, self).get_context()
         ctx['form'] = self.get_form()
         return ctx
 
