@@ -1,3 +1,8 @@
+try:
+    import __builtin__ as builtins
+except ImportError:
+    import builtins
+
 import mock
 
 from streamline import forms as mod
@@ -184,3 +189,15 @@ def test_roca_form_route_form_attrib(render_template, get_form, request):
     assert not hasattr(f, 'form')
     f.create_response()
     assert f.form == form
+
+
+@mock.patch.object(builtins, 'super')
+@mock.patch.object(mod.XHRPartialFormRoute, 'request')
+@mock.patch.object(mod.XHRPartialFormRoute, 'get_form')
+def test_roca_form_route_get_context_super_called(get_form, request, super_fn):
+    class Foo(mod.XHRPartialFormRoute):
+        pass
+    f = Foo()
+    f.get_context()
+    assert super_fn.called
+    super_fn.assert_called_with(mod.XHRPartialFormRoute, f)
