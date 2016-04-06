@@ -14,6 +14,14 @@ def test_get_generic_name():
     assert FooBar.get_generic_name() == exp
 
 
+def test_get_generic_name_nested_module():
+    class FooBar(mod.RouteBase):
+        pass
+    exp = 'module:foo_bar'
+    with mock.patch.object(FooBar, '__module__', new='package.module'):
+        assert FooBar.get_generic_name() == exp
+
+
 def test_no_valid_methods():
     class FooBar(mod.RouteBase):
         pass
