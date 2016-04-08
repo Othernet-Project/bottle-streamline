@@ -84,6 +84,16 @@ def test_get_form(get_bound_form, get_unbound_form):
     get_bound_form.assert_called_once_with()
 
 
+@mock.patch.object(mod.FormMixin, 'get_unbound_form')
+@mock.patch.object(mod.FormMixin, 'get_bound_form')
+def test_get_form_already_bound(get_bound_form, get_unbound_form):
+    f = mod.FormMixin()
+    f.form = mock.Mock()
+    assert f.get_form() == f.form
+    assert not get_bound_form.called
+    assert not get_unbound_form.called
+
+
 def test_validate_form():
     class Foo(mod.FormMixin):
         pass

@@ -70,8 +70,12 @@ class FormMixin(object):
     def get_form(self):
         """
         Return form object. Depending on the HTTP verb, this method returns
-        either an unbound (GET) or a bound (all other verbs) form.
+        either an unbound (GET) or a bound (all other verbs) form. Once a form
+        object is created, this method will keep returning the previously
+        created instance.
         """
+        if hasattr(self, 'form'):
+            return self.form
         if self.method == 'get':
             return self.get_unbound_form()
         return self.get_bound_form()
