@@ -11,16 +11,14 @@ setup(
     name='bottle-streamline',
     description='Python module writing class-based route handlers in bottle.',
     keywords='configuration ini confloader',
-    version='1.0.dev1',
+    version='1.0.dev2',
     author='Outernet Inc',
     author_email='apps@outernet.is',
     license='BSD',
     url='https://github.com/Outernet-Project/bottle-streamline',
     long_description=read('README.rst'),
     packages=find_packages(),
-    install_requires=[
-        'bottle>=0.12',
-    ],
+    install_requires=['bottle'],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: BSD License',
