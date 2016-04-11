@@ -28,6 +28,11 @@ class RouteBase(object):
     into a lazy object simply by postponing any evaluation until the the method
     is called.
     """
+    #: Route name
+    name = None
+
+    #: Route path
+    path = None
 
     #: List of plugins that should be applied
     include_plugins = None
@@ -67,11 +72,17 @@ class RouteBase(object):
         self.is_xhr = self.request.is_xhr
 
     @classmethod
-    def route(cls, path, name=None, app=None, **kwargs):
+    def route(cls, path=None, name=None, app=None, **kwargs):
         """
-        Register a route by using class' configuration. This method will take a
-        path, optional route name, and optional app object, and register a
-        route for the specified path using class properties.
+        Register a route by using class' configuration. This method will take
+        an optional path, optional route name, and optional app object, and
+        register a route for the specified path using class properties.
+
+        If ``path`` is not specified, a path will be obtained by invoking the
+        :py:meth:`~RouteBase.get_path` class method. Similarly, if ``name`` is
+        not specified, it will be obtained by invoking the
+        :py:meth:`~RouteBase.get_name` class method. The default app that is
+        used when ``app`` argument is missing is the Bottle's defalt app.
 
         The handler is registered for http verbs (e.g., GET, POST) for which a
         lower-case method name exists that matches the verb.
@@ -83,7 +94,8 @@ class RouteBase(object):
         """
         if not app:
             app = cls.bottle.default_app()
-        kwargs['name'] = name or cls.get_generic_name()
+        path = path or cls.get_path()
+        kwargs['name'] = name or cls.get_name()
         kwargs['method'] = cls.get_valid_methods()
         kwargs['apply'] = cls.include_plugins
         kwargs['skip'] = cls.exclude_plugins
@@ -96,6 +108,13 @@ class RouteBase(object):
         return [m.upper() for m in METHODS if m in props]
 
     @classmethod
+    def get_path(cls):
+        """
+        Return the value of :py:attr:`~RouteBase.path` attribute.
+        """
+        return cls.path
+
+    @classmethod
     def get_generic_name(cls):
         """
         Returns a generic name that can be used for naming a route. This name
@@ -105,6 +124,15 @@ class RouteBase(object):
         """
         return '{}:{}'.format(cls.__module__.split('.')[-1],
                               utils.decamelize(cls.__name__))
+
+    @classmethod
+    def get_name(cls):
+        """
+        Return the value of :py:attr:`~RouteBase.name` attribute and fall back
+        on a generic name returned by :py:meth:`~RouteBase.get_generic_name`
+        class method.
+        """
+        return cls.name or cls.get_generic_name()
 
     def get_method(self):
         return self.request.method.lower()

@@ -11,6 +11,7 @@ bottle.TEMPLATE_PATH.insert(0, VIEWSDIR)
 
 
 class MyRoute(TemplateRoute):
+    path = '/hello/:name'
     template_name = 'hello'
 
     def get(self, name):
@@ -18,6 +19,7 @@ class MyRoute(TemplateRoute):
 
 
 class MyRocaRoute(ROCARoute):
+    path = '/roca'
     template_name = 'roca_base'
     partial_template_name = 'roca_partial'
 
@@ -26,8 +28,8 @@ class MyRocaRoute(ROCARoute):
 
 
 def main():
-    MyRoute.route('/hello/:name')
-    MyRocaRoute.route('/roca')
+    MyRoute.route()
+    MyRocaRoute.route()
     bottle.run()
 
 

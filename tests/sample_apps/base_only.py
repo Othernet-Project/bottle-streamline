@@ -2,12 +2,16 @@ from streamline import RouteBase
 
 
 class MyRoute(RouteBase):
+    path = '/'
+
     def get(self):
         self.response.headers['foo'] = 'bar'
         return 'Hello world!'
 
 
 class MyOtherRoute(RouteBase):
+    path = '/other'
+
     def post(self):
         return 'Posted'
 
@@ -19,8 +23,8 @@ class MyOtherRoute(RouteBase):
 
 
 def main():
-    MyRoute.route('/')
-    MyOtherRoute.route('/other')
+    MyRoute.route()
+    MyOtherRoute.route()
     MyRoute.bottle.run()
 
 
