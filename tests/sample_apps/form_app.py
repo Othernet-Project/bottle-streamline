@@ -11,6 +11,8 @@ numeric = lambda v: unicode(v).strip().isnumeric() if v else True
 
 
 class Simple(FormRoute):
+    path = '/simple'
+
     def show_form(self):
         return 'Imagine this is a form'
 
@@ -27,7 +29,7 @@ Simple.form_factory.validators['number'] = numeric
 
 
 def main():
-    Simple.route('/simple')
+    Simple.route()
     bottle.run(debug=True)
 
 

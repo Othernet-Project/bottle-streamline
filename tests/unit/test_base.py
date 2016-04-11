@@ -22,6 +22,32 @@ def test_get_generic_name_nested_module():
         assert FooBar.get_generic_name() == exp
 
 
+def test_get_name():
+    class FooBar(mod.RouteBase):
+        name = 'teddy'
+    assert FooBar.get_name() == 'teddy'
+
+
+def test_get_name_generic_fallback():
+    class FooBar(mod.RouteBase):
+        pass
+    exp = 'module:foo_bar'
+    with mock.patch.object(FooBar, '__module__', new='package.module'):
+        assert FooBar.get_name() == exp
+
+
+def test_get_path():
+    class FooBar(mod.RouteBase):
+        path = '/teddy'
+    assert FooBar.get_path() == '/teddy'
+
+
+def test_get_path_no_default():
+    class FooBar(mod.RouteBase):
+        pass
+    assert FooBar.get_path() is None
+
+
 def test_no_valid_methods():
     class FooBar(mod.RouteBase):
         pass
@@ -77,6 +103,38 @@ def test_route_custom_name(bottle):
     class FooBar(mod.RouteBase):
         pass
     FooBar.route('/foo', name='foo')
+    app.route.assert_called_once_with(
+        '/foo',
+        name='foo',
+        method=[],
+        apply=None,
+        skip=None,
+        callback=FooBar)
+
+
+@mock.patch.object(mod.RouteBase, 'bottle')
+def test_route_class_specified_path(bottle):
+    app = bottle.default_app.return_value
+
+    class FooBar(mod.RouteBase):
+        path = '/foo'
+    FooBar.route(name='foo')
+    app.route.assert_called_once_with(
+        '/foo',
+        name='foo',
+        method=[],
+        apply=None,
+        skip=None,
+        callback=FooBar)
+
+
+@mock.patch.object(mod.RouteBase, 'bottle')
+def test_route_class_specified_name(bottle):
+    app = bottle.default_app.return_value
+
+    class FooBar(mod.RouteBase):
+        name = 'foo'
+    FooBar.route('/foo')
     app.route.assert_called_once_with(
         '/foo',
         name='foo',
