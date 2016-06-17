@@ -158,3 +158,12 @@ class NonIterableResponseMixin(object):
     def __iter__(self):
         self.create_response()
         return iter([self.body])
+
+
+class NonIterableRouteBase(NonIterableResponseMixin, RouteBase):
+    """
+    Provides the exact same functionality as :py:class:`RouteBase`, only with
+    :py:class:`NonIterableResponseMixin` included, so that large response
+    bodies are returned more efficiently.
+    """
+    pass
