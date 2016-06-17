@@ -147,3 +147,14 @@ class RouteBase(object):
     def __iter__(self):
         self.create_response()
         return iter(self.body)
+
+
+class NonIterableResponseMixin(object):
+    """
+    This mixin prevents the response data from being iterated upon byte-by-byte
+    by bottle, which in case of large responses has a big performance impact,
+    by wrapping the response data in a list.
+    """
+    def __iter__(self):
+        self.create_response()
+        return iter([self.body])

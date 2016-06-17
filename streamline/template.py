@@ -4,7 +4,7 @@ This module contains mixins and classes for working with templates.
 
 import bottle
 
-from .base import RouteBase
+from .base import RouteBase, NonIterableResponseMixin
 
 
 class TemplateMixin(object):
@@ -80,7 +80,7 @@ class TemplateMixin(object):
         return fn(template, ctx)
 
 
-class TemplateRoute(TemplateMixin, RouteBase):
+class TemplateRoute(TemplateMixin, NonIterableResponseMixin, RouteBase):
     """
     Class that renders the response into a template.
 
