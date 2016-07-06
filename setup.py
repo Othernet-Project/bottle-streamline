@@ -10,8 +10,8 @@ def read(fname):
 setup(
     name='bottle-streamline',
     description='Python module writing class-based route handlers in bottle.',
-    keywords='configuration ini confloader',
-    version='1.0.dev4',
+    keywords='bottle route class',
+    version='1.0',
     author='Outernet Inc',
     author_email='apps@outernet.is',
     license='BSD',
