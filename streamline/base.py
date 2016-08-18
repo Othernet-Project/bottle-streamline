@@ -150,6 +150,9 @@ class RouteBase(object):
         self.create_response()
         return iter(self.body)
 
+#: Alias for ``RouteBase``
+Route = RouteBase
+
 
 class NonIterableResponseMixin(object):
     """
