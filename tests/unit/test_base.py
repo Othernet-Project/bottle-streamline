@@ -263,3 +263,99 @@ def test_create_response_calls_invalid_method(request):
     f = FooBar()
     with pytest.raises(bottle.HTTPError):
         iter(f)
+
+
+@mock.patch.object(mod.RouteBase, 'request')
+def test_before_hooks(request):
+    calls = []
+    hook = lambda x: calls.append('hook')
+    request.method = 'GET'
+
+    mod.RouteBase.before_hooks.append(hook)
+
+    class Foo(mod.RouteBase):
+        def get(self):
+            calls.append('get')
+            return []
+
+    foo = Foo()
+    foo = list(foo)
+    assert calls == ['hook', 'get']
+
+
+@mock.patch.object(mod.RouteBase, 'request')
+def test_after_hooks(request):
+    calls = []
+    hook = lambda x: calls.append('hook')
+    request.method = 'GET'
+
+    mod.RouteBase.after_hooks.append(hook)
+
+    class Foo(mod.RouteBase):
+        def get(self):
+            calls.append('get')
+            return []
+
+    foo = Foo()
+    foo = list(foo)
+    assert calls == ['get', 'hook']
+
+
+@mock.patch.object(mod.RouteBase, 'request')
+def test_add_before_hooks(request):
+    calls = []
+    hook = lambda x: calls.append('hook')
+    request.method = 'GET'
+
+    class Foo(mod.RouteBase):
+        def get(self):
+            calls.append('get')
+            return []
+
+    mod.RouteBase.before(hook)
+
+    foo = Foo()
+    foo = list(foo)
+    assert calls == ['hook', 'get']
+
+
+@mock.patch.object(mod.RouteBase, 'request')
+def test_add_after_hooks(request):
+    calls = []
+    hook = lambda x: calls.append('hook')
+    request.method = 'GET'
+
+    class Foo(mod.RouteBase):
+        def get(self):
+            calls.append('get')
+            return []
+
+    mod.RouteBase.after(hook)
+
+    foo = Foo()
+    foo = list(foo)
+    assert calls == ['get', 'hook']
+
+
+@mock.patch.object(mod.RouteBase, 'request')
+def test_hook_decorators(request):
+    calls = []
+
+    @mod.before
+    def fn1(route):
+        calls.append('fn1')
+
+    @mod.after
+    def fn2(route):
+        calls.append('fn2')
+
+    class Foo(mod.RouteBase):
+        def get(self):
+            calls.append('get')
+            return []
+
+    request.method = 'GET'
+
+    foo = Foo()
+    foo = list(foo)
+    assert calls == ['fn1', 'get', 'fn2']
