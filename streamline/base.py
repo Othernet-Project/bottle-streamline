@@ -159,7 +159,7 @@ class RouteBase(object):
         iteration over the response body begins. They take the route handler
         object as the only argument, and their return value is ignored.
         """
-        RouteBase.after_hooks.append(fn)
+        RouteBase.after_hooks.insert(0, fn)
 
     def get_method(self):
         return self.request.method.lower()
