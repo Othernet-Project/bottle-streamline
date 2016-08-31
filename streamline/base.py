@@ -95,6 +95,8 @@ class RouteBase(object):
         if not app:
             app = cls.bottle.default_app()
         path = path or cls.get_path()
+        if path is None:
+            raise RuntimeError('No path specified for {}'.format(cls))
         kwargs['name'] = name or cls.get_name()
         kwargs['method'] = cls.get_valid_methods()
         kwargs['apply'] = cls.include_plugins
@@ -147,6 +149,9 @@ class RouteBase(object):
     def __iter__(self):
         self.create_response()
         return iter(self.body)
+
+#: Alias for ``RouteBase``
+Route = RouteBase
 
 
 class NonIterableResponseMixin(object):

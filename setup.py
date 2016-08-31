@@ -11,7 +11,7 @@ setup(
     name='bottle-streamline',
     description='Python module writing class-based route handlers in bottle.',
     keywords='bottle route class',
-    version='1.1.dev1',
+    version='2.0.dev1',
     author='Outernet Inc',
     author_email='apps@outernet.is',
     license='BSD',
