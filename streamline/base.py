@@ -3,6 +3,8 @@ This module contains the base class which is used by all other class-based
 route handler classes.
 """
 
+import functools
+
 import bottle
 
 from . import utils
@@ -51,6 +53,9 @@ class RouteBase(object):
     redirect = staticmethod(bottle.redirect)
     #: alias of :py:class:`bottle.HTTPResponse`
     HTTPResponse = bottle.HTTPResponse
+
+    before_hooks = []
+    after_hooks = []
 
     def __init__(self, *args, **kwargs):
         """
@@ -136,6 +141,26 @@ class RouteBase(object):
         """
         return cls.name or cls.get_generic_name()
 
+    @staticmethod
+    def before(fn):
+        """
+        Register a function as a before-create hook. Before-create hooks are
+        invoked before the :py:attr:`~RouteBase.create_response` call. They
+        take the route handler object as the only argument, and their return
+        value is ignored.
+        """
+        RouteBase.before_hooks.append(fn)
+
+    @staticmethod
+    def after(fn):
+        """
+        Register a function as an after-create hook. After-create hooks are
+        invoked after the :py:attr:`~RouteBase.create_response` call, before
+        iteration over the response body begins. They take the route handler
+        object as the only argument, and their return value is ignored.
+        """
+        RouteBase.after_hooks.append(fn)
+
     def get_method(self):
         return self.request.method.lower()
 
@@ -147,7 +172,11 @@ class RouteBase(object):
         self.body = meth(*self.args, **self.kwargs)
 
     def __iter__(self):
+        for hook in self.before_hooks:
+            hook(self)
         self.create_response()
+        for hook in self.after_hooks:
+            hook(self)
         return iter(self.body)
 
 #: Alias for ``RouteBase``
@@ -161,7 +190,11 @@ class NonIterableResponseMixin(object):
     by wrapping the response data in a list.
     """
     def __iter__(self):
+        for hook in self.before_hooks:
+            hook(self)
         self.create_response()
+        for hook in self.after_hooks:
+            hook(self)
         return iter([self.body])
 
 
@@ -172,3 +205,32 @@ class NonIterableRouteBase(NonIterableResponseMixin, RouteBase):
     bodies are returned more efficiently.
     """
     pass
+
+
+def before(fn):
+    """
+    Decorator that registers a function as a before hook.
+
+    Example::
+
+        @before
+        def myhook(route):
+            pass
+    """
+    RouteBase.before(fn)
+    return fn
+
+
+def after(fn):
+    """
+    Decorator that register a function as an after hook.
+
+    Example::
+
+        @after
+        def myhook(route):
+            pass
+
+    """
+    RouteBase.after(fn)
+    return fn
